@@ -6,3 +6,9 @@ body {
 .flow-content > * + * {
 	margin-top: 1rem;
 }
+
+form {
+	padding: 2rem;
+	border: 2px solid currentColor;
+	border-radius: 1em;
+}
