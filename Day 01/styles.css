@@ -1,0 +1,8 @@
+body {
+	display: grid;
+	place-items: center;
+}
+
+.flow-content > * + * {
+	margin-top: 1rem;
+}
