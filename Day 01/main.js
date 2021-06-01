@@ -4,22 +4,22 @@
 const form = document.querySelector("form");
 const passwordInput = document.querySelector("#password");
 const submitButton = document.querySelector("button");
+let passwordToggle;
 
 /* ====================================================
    Functions
    ==================================================== */
 
 /**
- * Render HTML that is dependent on JavaScript
+ * Check if the input is a password, if not convert and submit the form
+ * @param      {event}  event   The event object
  */
-function renderPasswordToggle() {
-	const toggleControls = document.createElement("label");
-	toggleControls.innerHTML = `
-		<input type="checkbox" name="show-passwords" id="show-password" />
-			Show password
-		<span id="visibility-state" class="visually-hidden" aria-live="polite"></span>
-		`;
-	passwordInput.after(toggleControls);
+function submitHandler(event) {
+	event.preventDefault();
+	if (passwordInput.type === "text") {
+		passwordInput.type = "password";
+	}
+	form.submit();
 }
 
 /**
@@ -40,8 +40,8 @@ function updatePasswordStatus(element) {
  * @param      {event}  event   The event object
  */
 function togglePassword(event) {
-	if (!event.target.matches("#show-password")) return;
-	if (passwordInput.type === "password") {
+	if (event.target !== passwordToggle) return;
+	if (passwordToggle.checked) {
 		passwordInput.type = "text";
 	} else {
 		passwordInput.type = "password";
@@ -52,15 +52,17 @@ function togglePassword(event) {
 }
 
 /**
- * Check if the input is a password and submit the form
- * @param      {event}  event   The event object
+ * Render HTML that is dependent on JavaScript
  */
-function submitHandler(event) {
-	event.preventDefault();
-	if (passwordInput.type === "text") {
-		passwordInput.type = "password";
-	}
-	form.submit();
+function renderPasswordToggle() {
+	const toggleControls = document.createElement("label");
+	toggleControls.innerHTML = `
+		<input type="checkbox" name="show-passwords" id="show-password" />
+			Show password
+		<span id="visibility-state" class="visually-hidden" aria-live="polite"></span>
+		`;
+	passwordInput.after(toggleControls);
+	passwordToggle = document.querySelector("#show-password");
 }
 
 /* ====================================================
