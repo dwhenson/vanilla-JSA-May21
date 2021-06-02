@@ -9,6 +9,7 @@ let passwordToggle;
 /* ====================================================
    Functions
    ==================================================== */
+
 /**
  * Check if the input is a password, if not convert and submit the form
  * @param      {event}  event   The event object
@@ -27,10 +28,10 @@ function submitHandler(event) {
  */
 function updatePasswordStatus(element) {
 	if (passwordInput.type === "text") {
-		element.textContent = "Your passwords are visible";
+		element.textContent = "Your password is visible";
 	}
 	if (passwordInput.type === "password") {
-		element.textContent = "Your password are hidden";
+		element.textContent = "Your password is hidden";
 	}
 }
 
@@ -56,8 +57,8 @@ function togglePassword(event) {
 function renderPasswordToggle() {
 	const toggleControls = document.createElement("label");
 	toggleControls.innerHTML = `
-		<input type="checkbox" name="show-passwords" id="show-passwords">
-			Show passwords
+		<input type="checkbox" name="show-passwords" id="show-password" />
+			Show password
 		<span id="visibility-state" class="visually-hidden" aria-live="polite"></span>
 		`;
 	passwordInput.after(toggleControls);
@@ -68,5 +69,5 @@ function renderPasswordToggle() {
    Inits and Event Listeners
    ==================================================== */
 renderPasswordToggle();
-form.addEventListener("input", togglePassword);
+form.addEventListener("change", togglePassword);
 submitButton.addEventListener("click", submitHandler);
