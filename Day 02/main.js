@@ -17,9 +17,7 @@ let passwordToggle;
  */
 function submitHandler(event) {
 	event.preventDefault();
-	if (passwordInput.type === "text") {
-		passwordInput.type = "password";
-	}
+	passwordInput.type = "password";
 	form.submit();
 }
 
