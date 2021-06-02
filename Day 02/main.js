@@ -2,7 +2,8 @@
    Variables
    ==================================================== */
 const form = document.querySelector("form");
-const passwordInput = document.querySelector("#password");
+const passwordInput = document.querySelector("#new-password");
+const inputs = document.querySelectorAll("input");
 const submitButton = document.querySelector("button");
 let passwordToggle;
 
@@ -41,12 +42,15 @@ function updatePasswordStatus(element) {
  */
 function togglePassword(event) {
 	if (event.target !== passwordToggle) return;
-	if (passwordToggle.checked) {
-		passwordInput.type = "text";
-	} else {
-		passwordInput.type = "password";
-	}
-	// Get the element that provides status updates for screen readers
+	// Loop over inputs and adjust type based on checkbox state
+	inputs.forEach(function (input) {
+		if (passwordToggle.checked) {
+			input.type = "text";
+		} else {
+			input.type = "password";
+		}
+	});
+	// Get the element that updates status for screen readers, and call update
 	const element = form.querySelector("#visibility-state");
 	updatePasswordStatus(element);
 }
