@@ -3,7 +3,7 @@
    ==================================================== */
 const form = document.querySelector("form");
 const passwordInput = document.querySelector("#new-password");
-const inputs = document.querySelectorAll("input");
+const inputs = document.querySelectorAll("[type='password']");
 const submitButton = document.querySelector("button");
 let passwordToggle;
 
