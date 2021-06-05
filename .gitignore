@@ -92,7 +92,7 @@ node_modules/
 .prettierrc.json
 .styleintrc
 .stylelintrc.json
-notes.todo
+*.todo
 
 
 

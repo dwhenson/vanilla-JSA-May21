@@ -1,9 +1,8 @@
 /* ====================================================
    Variables
    ==================================================== */
-const form = document.querySelector("form");
 const passwordInput = document.querySelector("#new-password");
-const inputs = document.querySelectorAll("[type='password']");
+// const inputs = [....querySelectorAll("[type='password']")];
 const submitButton = document.querySelector("button");
 let passwordToggle;
 
@@ -18,18 +17,17 @@ let passwordToggle;
 function submitHandler(event) {
 	event.preventDefault();
 	passwordInput.type = "password";
-	form.submit();
+	event.target.closest("form").submit();
 }
 
 /**
  * Update the password status message for screen readers
  * @param      {object}  element  The element that contains the text message
  */
-function updatePasswordStatus(element) {
-	if (passwordInput.type === "text") {
+function updatePasswordStatus(event, element) {
+	if (event.target.checked) {
 		element.textContent = "Your password is visible";
-	}
-	if (passwordInput.type === "password") {
+	} else {
 		element.textContent = "Your password is hidden";
 	}
 }
@@ -39,37 +37,40 @@ function updatePasswordStatus(element) {
  * @param      {event}  event   The event object
  */
 function togglePassword(event) {
-	if (event.target !== passwordToggle) return;
-	// Loop over inputs and adjust type based on checkbox state
-	inputs.forEach(function (input) {
-		if (passwordToggle.checked) {
+	if (!event.target.matches("[type='checkbox']")) return;
+	const form = event.target.closest("form");
+	const passwordInputs = form.querySelectorAll("input:not(#username, [type='checkbox'])");
+	passwordInputs.forEach(function (input) {
+		if (event.target.checked) {
 			input.type = "text";
 		} else {
 			input.type = "password";
 		}
 	});
 	// Get the element that updates status for screen readers, and call update
-	const element = form.querySelector("#visibility-state");
-	updatePasswordStatus(element);
+	const element = form.querySelector(".visually-hidden");
+	updatePasswordStatus(event, element);
 }
 
 /**
  * Render HTML that is dependent on JavaScript
  */
 function renderPasswordToggle() {
-	const toggleControls = document.createElement("label");
-	toggleControls.innerHTML = `
-		<input type="checkbox" name="show-passwords" id="show-password" />
-			Show password
-		<span id="visibility-state" class="visually-hidden" aria-live="polite"></span>
-		`;
-	passwordInput.after(toggleControls);
-	passwordToggle = document.querySelector("#show-password");
+	const lastInputs = document.querySelectorAll("[data-pre-checkbox]");
+	lastInputs.forEach(function (input, index) {
+		const toggleControls = document.createElement("label");
+		toggleControls.innerHTML = `
+			<input type="checkbox" name="show-passwords" id="show-password-${index}" />
+				Show password
+			<span class="visually-hidden" aria-live="polite"></span>
+			`;
+		input.after(toggleControls);
+	});
 }
 
 /* ====================================================
    Inits and Event Listeners
    ==================================================== */
 renderPasswordToggle();
-form.addEventListener("change", togglePassword);
+document.addEventListener("change", togglePassword);
 submitButton.addEventListener("click", submitHandler);
