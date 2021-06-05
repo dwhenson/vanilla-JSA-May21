@@ -1,23 +1,30 @@
 /* ====================================================
    Variables
    ==================================================== */
-const passwordInput = document.querySelector("#new-password");
-// const inputs = [....querySelectorAll("[type='password']")];
+// const passwordInput = document.querySelector("#new-password");
+const passwordInputs = [...document.querySelectorAll("[type='password']")];
 const submitButton = document.querySelector("button");
-let passwordToggle;
 
 /* ====================================================
    Functions
    ==================================================== */
 
 /**
- * Check if the input is a password, if not convert and submit the form
+ * Check if relevant form inputs are a password, if not convert and submit the form
  * @param      {event}  event   The event object
  */
 function submitHandler(event) {
 	event.preventDefault();
-	passwordInput.type = "password";
-	event.target.closest("form").submit();
+	const form = event.target.closest("form");
+	// Get all relevant inputs inside the relevant form
+	const inputs = form.querySelectorAll("input:not([type='checkbox'], #username)");
+	// Convert back to password as needed before form submission
+	inputs.forEach(function (input) {
+		if (input.type === "text") {
+			input.type = "password";
+		}
+	});
+	form.submit();
 }
 
 /**
@@ -39,12 +46,14 @@ function updatePasswordStatus(event, element) {
 function togglePassword(event) {
 	if (!event.target.matches("[type='checkbox']")) return;
 	const form = event.target.closest("form");
-	const passwordInputs = form.querySelectorAll("input:not(#username, [type='checkbox'])");
-	passwordInputs.forEach(function (input) {
+	passwordInputs.forEach(function (passwordInput) {
+		// If the checkbox and password input aren't in the same form return
+		if (form !== passwordInput.closest("form")) return;
+		// If so convert type to show password
 		if (event.target.checked) {
-			input.type = "text";
+			passwordInput.type = "text";
 		} else {
-			input.type = "password";
+			passwordInput.type = "password";
 		}
 	});
 	// Get the element that updates status for screen readers, and call update
@@ -56,7 +65,9 @@ function togglePassword(event) {
  * Render HTML that is dependent on JavaScript
  */
 function renderPasswordToggle() {
-	const lastInputs = document.querySelectorAll("[data-pre-checkbox]");
+	// Get the final input elements
+	const lastInputs = document.querySelectorAll("div:last-of-type input");
+	// Render the show password checkbox after each final input element
 	lastInputs.forEach(function (input, index) {
 		const toggleControls = document.createElement("label");
 		toggleControls.innerHTML = `
