@@ -17,13 +17,13 @@ function submitHandler(event) {
 	event.preventDefault();
 	const form = event.target.closest("form");
 	// Get all relevant inputs inside the relevant form
-	const inputs = form.querySelectorAll("input:not([type='checkbox'], #username)");
+	const inputs = form.querySelectorAll("[type='text']");
 	// Convert back to password as needed before form submission
-	inputs.forEach(function (input) {
-		if (input.type === "text") {
+	if (inputs.length >= 1) {
+		inputs.forEach(function (input) {
 			input.type = "password";
-		}
-	});
+		});
+	}
 	form.submit();
 }
 
