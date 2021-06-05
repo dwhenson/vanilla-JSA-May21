@@ -14,47 +14,18 @@
 	</head>
 
 	<body>
-		<main class="flow-section">
-			<section class="flow-content">
-				<h2>Change Username</h2>
-				<p>Enter your username and password to change your username.</p>
+		<form class="flow-content">
+			<div>
+				<label for="current-password">Current Password</label>
+				<input type="password" name="current-password" id="current-password" />
+			</div>
 
-				<form>
-					<div>
-						<label for="username">Username</label>
-						<input type="text" name="username" id="username" />
-					</div>
+			<div>
+				<label for="new-password">New Password</label>
+				<input type="password" name="new-password" id="new-password" />
+			</div>
 
-					<div>
-						<label for="password">Password</label>
-						<input type="password" name="password" id="password" />
-					</div>
-					<p>
-						<button type="submit">Change Username</button>
-					</p>
-				</form>
-			</section>
-
-			<section class="flow-content">
-				<h2>Change Password</h2>
-				<p>Enter your current password and new password below.</p>
-
-				<form>
-					<div>
-						<label for="current-password">Current Password</label>
-						<input type="password" name="current-password" id="current-password" />
-					</div>
-
-					<div>
-						<label for="new-password">New Password</label>
-						<input type="password" name="new-password" id="new-password" />
-					</div>
-
-					<p>
-						<button type="submit">Change Passwords</button>
-					</p>
-				</form>
-			</section>
-		</main>
+			<button type="submit">Change Password</button>
+		</form>
 	</body>
 </html>
