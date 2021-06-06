@@ -84,4 +84,4 @@ function renderPasswordToggle() {
    ==================================================== */
 renderPasswordToggle();
 document.addEventListener("change", togglePassword);
-submitButton.addEventListener("click", submitHandler);
+submitButton.addEventListener("submit", submitHandler);
