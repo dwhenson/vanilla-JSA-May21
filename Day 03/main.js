@@ -39,10 +39,10 @@ function updatePasswordStatus(element) {
  * @param      {event}  event   The event object
  */
 function togglePassword(event) {
-	if (event.target !== passwordToggle) return;
+	if (event.target.matches("[(type='checkbox')]")) return;
 	// Loop over inputs and adjust type based on checkbox state
 	inputs.forEach(function (input) {
-		if (passwordToggle.checked) {
+		if (event.target.checked) {
 			input.type = "text";
 		} else {
 			input.type = "password";
@@ -64,7 +64,6 @@ function renderPasswordToggle() {
 		<span id="visibility-state" class="visually-hidden" aria-live="polite"></span>
 		`;
 	passwordInput.after(toggleControls);
-	passwordToggle = document.querySelector("#show-password");
 }
 
 /* ====================================================
