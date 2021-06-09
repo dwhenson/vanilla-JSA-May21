@@ -2,8 +2,6 @@
 	Variables
 	==================================================== */
 const textarea = document.querySelector("#text");
-const charCount = document.querySelector("#character-count");
-const wordCount = document.querySelector("#word-count");
 
 /* ====================================================
 	Functions
@@ -24,6 +22,9 @@ function countWords(string) {
  * Handle inputs to render the number of words and characters in the HTML
  */
 function inputHandler() {
+	const charCount = document.querySelector("#character-count");
+	const wordCount = document.querySelector("#word-count");
+	// Update variable contents based on textInput value
 	charCount.textContent = `${textarea.value.length} ${
 		// if value is singular render correct word
 		textarea.value.length === 1 //
@@ -38,7 +39,23 @@ function inputHandler() {
 	}`;
 }
 
+/**
+ * Render HTML that is dependent on JavaScript
+ */
+function renderCountUpdates() {
+	// Create <p> to hold JS dependent content
+	const countUpdates = document.createElement("p");
+	// Add attributes
+	countUpdates.setAttribute("aria-live", "polite");
+	countUpdates.setAttribute("aria-atomic", "true");
+	// Create nested elements and content
+	countUpdates.innerHTML = `You've written <strong><span id="word-count">0 words</span></strong> and <strong><span id="character-count">0 characters</span></strong>.`;
+	// Add JS dependent content to the DOM
+	textarea.after(countUpdates);
+}
+
 /* ====================================================
 	Inits and Event Listeners
 	==================================================== */
+renderCountUpdates();
 textarea.addEventListener("input", inputHandler);
