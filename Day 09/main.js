@@ -6,7 +6,6 @@ const textarea = document.querySelector("#text");
 /* ====================================================
 	Functions
 	==================================================== */
-
 /**
  * Counts the number of words.
  * @param      {String}  string  The string of text content
@@ -27,15 +26,11 @@ function inputHandler() {
 	// Update variable contents based on textInput value
 	charCount.textContent = `${textarea.value.length} ${
 		// if value is singular render correct word
-		textarea.value.length === 1 //
-			? "character"
-			: "characters"
+		textarea.value.length === 1 ? "character" : "characters"
 	}`;
 	wordCount.textContent = `${countWords(textarea.value)} ${
 		// if value is singular render correct word
-		countWords(textarea.value) === 1 //
-			? "word"
-			: "words"
+		countWords(textarea.value) === 1 ? "word" : "words"
 	}`;
 }
 
