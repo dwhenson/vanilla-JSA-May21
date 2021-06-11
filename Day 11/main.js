@@ -40,11 +40,11 @@ function inputHandler() {
 function renderCountUpdates() {
 	// Create <p> to hold JS dependent content
 	const countUpdates = document.createElement("p");
-	// Add attributes
+	// Add aria attributes
 	countUpdates.setAttribute("aria-live", "polite");
 	countUpdates.setAttribute("aria-atomic", "true");
 	// Create nested elements and content
-	countUpdates.innerHTML = `You've written <strong><span id="word-count">0 words</span></strong> and <strong><span id="character-count">0 characters</span></strong>.`;
+	countUpdates.innerHTML = `You've written <strong><span id="word-count">0 words</span></strong> and <strong><span id="character-count">0 characters</span></strong>`;
 	// Add JS dependent content to the DOM
 	textarea.after(countUpdates);
 }
