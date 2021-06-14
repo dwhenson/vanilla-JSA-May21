@@ -3,8 +3,12 @@ body {
 	place-items: center;
 }
 
+main {
+	width: 100%;
+}
+
 .flow-content > * + * {
-	margin-top: 1rem;
+	margin-top: 2rem;
 }
 
 .flow-section > * + * {

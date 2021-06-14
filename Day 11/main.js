@@ -13,7 +13,7 @@ const endpoint = "https://ron-swanson-quotes.herokuapp.com/v2/quotes";
  * Handle inputs to render the number of words and characters in the HTML
  */
 function inputHandler(event) {
-  console.log(event.target);
+  console.log(event.target, blockquote);
 }
 
 /* ====================================================
