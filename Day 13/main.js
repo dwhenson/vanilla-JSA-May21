@@ -81,9 +81,5 @@ function inputHandler(event) {
 renderButton();
 // Initial fetch quotes on load
 fetchQuotes();
-<<<<<<< HEAD
-// Listen for additional quote request
-=======
-// Listen for additional quote requestsss
->>>>>>> origin/main
+// Listen for additional quote requests
 document.addEventListener("click", inputHandler);
