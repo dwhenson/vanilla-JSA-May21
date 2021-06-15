@@ -18,10 +18,10 @@ function errorHandler(error) {
   // Fall back text and quote
   blockquote.innerHTML = `
     <p>Sorry, we can't get any more Ron right now. In his own words:</p>
-    <p><strong>You can't hack into a typewriter. That's all I have to say.</strong></p>
+    <p>You can't hack into a typewriter. That's all I have to say.</p>
   `;
   // Add error to console
-  console.error(error);
+  console.warn(error);
 }
 
 /**
@@ -40,7 +40,7 @@ function convertToJSON(response) {
  * @param      {sting}  data    The data from the API
  */
 function renderQuote(data) {
-  blockquote.innerHTML = `<p><strong>${data}</strong></p>`;
+  blockquote.innerHTML = `<p></p>${data}</p>`;
 }
 
 /**
@@ -51,6 +51,15 @@ function fetchQuotes() {
     .then(convertToJSON) //
     .then(renderQuote) //
     .catch(errorHandler);
+}
+
+/**
+ * Render HTML that is dependent on JavaScript
+ */
+function renderButton() {
+  const button = document.createElement("button");
+  button.textContent = "More Ron!";
+  blockquote.after(button);
 }
 
 /* Handlers
@@ -68,14 +77,9 @@ function inputHandler(event) {
   Inits and Event Listeners
   ==================================================== */
 
-/**
- * Render HTML that is dependent on JavaScript
- */
-function renderButton() {
-  const button = document.createElement("button");
-  button.textContent = "More Ron!";
-  blockquote.after(button);
-}
-
+// Render the button using JS as only functions if JS loads
 renderButton();
+// Initial fetch quotes on load
+fetchQuotes();
+// Listen for additional quote request
 document.addEventListener("click", inputHandler);
