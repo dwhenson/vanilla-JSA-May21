@@ -40,7 +40,7 @@ function checkResponse(response) {
  */
 function checkNumberOfQuotes(array) {
   if (array.length === 50) {
-    array.pop();
+    array.shift();
   }
 }
 
