@@ -3,6 +3,7 @@
   ==================================================== */
 const blockquote = document.querySelector("blockquote");
 const endpoint = "https://ron-swanson-quotes.herokuapp.com/v2/quotes";
+const quotes = [];
 
 /* ====================================================
   Functions
@@ -29,8 +30,18 @@ function errorHandler(error) {
  * @param  {string} response Unprocessed response from request
  * @return {array}           Response converted to JSON or rejected promise
  */
-function convertToJSON(response) {
+function checkResponse(response) {
   return response.ok ? response.json() : Promise.reject(new Error(response.status));
+}
+
+/**
+ * Check the number of items in the array, remove the first if 50 items
+ * @param      {Array}  array   The array
+ */
+function checkNumberOfQuotes(array) {
+  if (array.length === 50) {
+    array.pop();
+  }
 }
 
 /* Library
@@ -44,22 +55,28 @@ function renderQuote(data) {
 }
 
 /**
+ * Check if the quote has already been shown to the user
+ * @param      {Object}  data    The data returned from the API
+ * @return     {String}  The string to render to the HTML (or recall fetch if duplicate)
+ */
+function checkDuplicates(data) {
+  if (!quotes.includes(data[0])) {
+    quotes.push(data[0]);
+    checkNumberOfQuotes(quotes); // see helper functions
+    return data;
+  }
+  return fetchQuotes();
+}
+
+/**
  * Fetches quotes from the API
  */
 function fetchQuotes() {
   fetch(endpoint) //
-    .then(convertToJSON) //
+    .then(checkResponse) // see helper functions
+    .then(checkDuplicates) //
     .then(renderQuote) //
-    .catch(errorHandler);
-}
-
-/**
- * Render HTML that is dependent on JavaScript
- */
-function renderButton() {
-  const button = document.createElement("button");
-  button.textContent = "More Ron!";
-  blockquote.after(button);
+    .catch(errorHandler); // see helper functions
 }
 
 /* Handlers
@@ -76,6 +93,15 @@ function inputHandler(event) {
 /* ====================================================
   Inits and Event Listeners
   ==================================================== */
+
+/**
+ * Render HTML that is dependent on JavaScript
+ */
+function renderButton() {
+  const button = document.createElement("button");
+  button.textContent = "More Ron!";
+  blockquote.after(button);
+}
 
 // Render the button using JS as only functions if JS loads
 renderButton();
