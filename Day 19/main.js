@@ -2,7 +2,7 @@
   Variables
   ==================================================== */
 const blockquote = document.querySelector("blockquote");
-const endpoint = "https://ron-swanson-quotes.herokuapp.com/v2/quotes";
+const endpoint = "https://ron-swanson-quotes.herokuapp.com/v2/quotes!";
 const quotes = [];
 
 /* ====================================================
@@ -71,12 +71,15 @@ function checkDuplicates(data) {
 /**
  * Fetches quotes from the API
  */
-function fetchQuotes() {
-  fetch(endpoint) //
-    .then(checkResponse) // see helper functions
-    .then(checkDuplicates) //
-    .then(renderQuote) //
-    .catch(errorHandler); // see helper functions
+async function fetchQuotes() {
+  try {
+    const response = await fetch(endpoint); //
+    const data = await checkResponse(response); // see helper functions
+    const checkedData = await checkDuplicates(data); //
+    renderQuote(checkedData); //
+  } catch {
+    errorHandler(); // see helper functions
+  }
 }
 
 /* Handlers
@@ -106,6 +109,6 @@ function renderButton() {
 // Render the button using JS as only functions if JS loads
 renderButton();
 // Initial fetch quotes on load
-fetchQuotes();
+fetchQuotes().catch(errorHandler);
 // Listen for additional quote requests
 document.addEventListener("click", inputHandler);
