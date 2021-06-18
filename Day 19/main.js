@@ -71,7 +71,7 @@ function checkDuplicates(data) {
 /**
  * Fetches quotes from the API
  */
-async function fetchQuotes() {
+function fetchQuotes() {
   fetch(endpoint) //
     .then(checkResponse) // see helper functions
     .then(checkDuplicates) //
