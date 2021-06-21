@@ -36,7 +36,7 @@ function w3date(date) {
 }
 
 /**
- * Checks if the response is OK, and converts to json (or throws an error)
+ * Checks response.ok, if true, converts to json (else throws an error)
  * @param  {string} response Unprocessed response from request
  * @return {array}           Response converted to JSON or rejected promise
  */
@@ -48,7 +48,7 @@ function checkResponse(response) {
 /* ==================================================== */
 /**
  * Render the returned list of articles to HTML
- * @param      {sting}  data    The data from the API
+ * @param      {sting}  data    The data from the API call
  */
 function renderArticles(element, array) {
   element.innerHTML = `
