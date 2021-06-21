@@ -40,8 +40,25 @@ function checkResponse(response) {
  * Render the returned list of articles to HTML
  * @param      {sting}  data    The data from the API
  */
-function renderArticles(data) {
-  console.log(data.articles);
+function renderArticles(element, array) {
+  element.innerHTML = `
+
+    <ul role="list" class="flow-section">
+    ${array
+      .map(function (article) {
+        return `<li class="flow-content">
+        <article>
+          <h2><a href="#${article.url}">${article.title}</a></h2>
+          <div class="wrapper">
+            <p class="author">by ${article.author}</p>
+            <p class="published"><time datetime=${article.pubdate.toISOString()}>${article.pubdate}</time></p>
+          </div>
+          <p>${article.article}</p>
+        </article>
+      </li>`;
+      })
+      .join("")}
+    </ul>`;
 }
 
 /**
@@ -51,7 +68,7 @@ async function fetchArticles() {
   try {
     const response = await fetch(endpoint); //
     const data = await checkResponse(response); // see helper functions
-    renderArticles(data); //
+    renderArticles(app, data.articles); //
   } catch {
     errorHandler(app, errorMessage); // see helper functions
   }
