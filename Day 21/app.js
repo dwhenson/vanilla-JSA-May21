@@ -26,6 +26,16 @@ function errorHandler(element, message, error) {
 }
 
 /**
+ * Converts human readable date into machine readable date
+ * @param      {String}  date    The date as a human readable string
+ * @return     {String} A machine readable date
+ */
+function w3date(date) {
+  // Create a new date from API string, convert to ISO format and trim uneeded values
+  return new Date(`${date} UTC`).toISOString().substring(0, 10);
+}
+
+/**
  * Checks if the response is OK, and converts to json (or throws an error)
  * @param  {string} response Unprocessed response from request
  * @return {array}           Response converted to JSON or rejected promise
@@ -42,16 +52,17 @@ function checkResponse(response) {
  */
 function renderArticles(element, array) {
   element.innerHTML = `
-
     <ul role="list" class="flow-section">
     ${array
       .map(function (article) {
         return `<li class="flow-content">
-        <article>
+        <articl class="flow-content">
           <h2><a href="#${article.url}">${article.title}</a></h2>
           <div class="wrapper">
             <p class="author">by ${article.author}</p>
-            <p class="published"><time datetime=${article.pubdate.toISOString()}>${article.pubdate}</time></p>
+            <p class="published">
+              <time datetime="${w3date(article.pubdate)}">${article.pubdate}</time>
+              </p>
           </div>
           <p>${article.article}</p>
         </article>
