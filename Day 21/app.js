@@ -31,7 +31,7 @@ function errorHandler(element, message, error) {
  * @return     {String} A machine readable date
  */
 function w3date(date) {
-  // Create a new date from API string, convert to ISO format and trim uneeded values
+  // Create a new date from API string, convert to ISO format and trim unneeded values
   return new Date(`${date} UTC`).toISOString().substring(0, 10);
 }
 
@@ -44,7 +44,7 @@ function checkResponse(response) {
   return response.ok ? response.json() : Promise.reject(new Error(response.status));
 }
 
-/* Library
+/* App
 /* ==================================================== */
 /**
  * Render the returned list of articles to HTML
@@ -56,7 +56,7 @@ function renderArticles(element, array) {
     ${array
       .map(function (article) {
         return `<li class="flow-content">
-        <articl class="flow-content">
+        <article class="flow-content">
           <h2><a href="#${article.url}">${article.title}</a></h2>
           <div class="wrapper">
             <p class="author">by ${article.author}</p>
@@ -88,5 +88,4 @@ async function fetchArticles() {
 /* ====================================================
   Inits and Event Listeners
   ==================================================== */
-
 fetchArticles();

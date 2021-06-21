@@ -93,6 +93,7 @@ node_modules/
 .styleintrc
 .stylelintrc.json
 *.todo
+notes.md
 
 
 
