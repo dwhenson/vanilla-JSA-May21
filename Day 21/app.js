@@ -51,20 +51,27 @@ function checkResponse(response) {
  * @param      {sting}  data    The data from the API call
  */
 function renderArticles(element, array) {
+  // If no array or it's empty call the errorHandler and return
+  if (!array || array.length < 1) {
+    errorHandler();
+    return;
+  }
+  // Else, if the array and it's items are there, render the text
   element.innerHTML = `
     <ul role="list" class="flow-section">
     ${array
-      .map(function (article) {
+      // Destructure each article object on array, and render
+      .map(function ({ url, title, author, pubdate, article }) {
         return `<li class="flow-content">
         <article class="flow-content">
-          <h2><a href="#${article.url}">${article.title}</a></h2>
-          <div class="wrapper">
-            <p class="author">by ${article.author}</p>
+          <h2><a href="#${url}">${title}</a></h2>
+          <footer class="wrapper">
+            <p class="author">by ${author}</p>
             <p class="published">
-              <time datetime="${w3date(article.pubdate)}">${article.pubdate}</time>
+              <time datetime="${w3date(pubdate)}">${pubdate}</time>
               </p>
-          </div>
-          <p>${article.article}</p>
+          </footer>
+          <p>${article}</p>
         </article>
       </li>`;
       })
