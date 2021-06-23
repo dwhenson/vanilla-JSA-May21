@@ -49,22 +49,35 @@ function checkResponses(responses) {
   );
 }
 
+function checkBio(arrayAuthors, articleAuthor) {
+  for (const author of arrayAuthors) {
+    if (author.bio && author.author === articleAuthor) {
+      return `<p>${author.bio}</p>`;
+    } else {
+      return "";
+    }
+  }
+}
+
 /* App
 /* ==================================================== */
+
 /**
- * Render the returned list of articles to HTML
- * @param      {sting}  data    The data from the API call
+ * Render the data from the fetch request to HTML
+ * @param      {object}  element        The element to render the data
+ * @param      {array}   arrayArticles  The array of articles
+ * @param      {array}  arrayAuthors   The array of authors
  */
-function renderArticles(element, array) {
+function renderArticles(element, arrayArticles, arrayAuthors) {
   // If no array or it's empty call the errorHandler and return
-  if (!array || array.length < 1) {
+  if (!arrayArticles || arrayArticles.length < 1) {
     errorHandler();
     return;
   }
   // Else, if the array and it's items are there, render the text
   element.innerHTML = `
     <ul role="list" class="flow-section">
-    ${array
+    ${arrayArticles
       // Destructure each article object on array, and render
       .map(function ({ url, title, author, pubdate, article }) {
         return `<li class="flow-content">
@@ -78,6 +91,7 @@ function renderArticles(element, array) {
           </footer>
           <p>${article}</p>
         </article>
+        ${checkBio(arrayAuthors, author)}
       </li>`;
       })
       .join("")}
@@ -91,8 +105,7 @@ async function fetchArticles() {
   try {
     const response = await Promise.all([fetch(endpointArticle), fetch(endpointAuthor)]); //
     const data = await checkResponses(response); // see helper functions
-    console.log(typeof data, data);
-    // renderArticles(app, data.articles); //
+    renderArticles(app, data[0].articles, data[1].authors); //
   } catch {
     errorHandler(app, errorMessage); // see helper functions
   }
