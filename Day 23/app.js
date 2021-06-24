@@ -21,7 +21,7 @@ const errorMessage = "<p>Sorry, we can't get any dragon training articles right 
  */
 function errorHandler(element, message, error) {
   // Fall back text and quote
-  element.innerHTML = `${message}`;
+  element.innerHTML = message;
   // Add error to console
   console.warn(error);
 }
@@ -41,7 +41,7 @@ function w3date(date) {
  * @param  {string} response Unprocessed response from request
  * @return {array}           Response converted to JSON or rejected promise
  */
-function checkResponses(responses) {
+function convertToJson(responses) {
   return Promise.all(
     responses.map(function (response) {
       return response.ok ? response.json() : Promise.reject(new Error(response.status));
@@ -49,14 +49,19 @@ function checkResponses(responses) {
   );
 }
 
-function checkBio(arrayAuthors, articleAuthor) {
-  for (const author of arrayAuthors) {
-    if (author.bio && author.author === articleAuthor) {
-      return `<p>${author.bio}</p>`;
-    } else {
-      return "";
-    }
-  }
+/**
+ * Find the first matching author
+ * @param  {Array}  authors The array of author objects
+ * @param  {String} name    The author name to search for
+ * @return {Object}         The author (or undefined if no match)
+ */
+function getAuthor(authors, name) {
+  // Iterate over every author object in the authors array
+  return authors.find(function (author) {
+    // Check if the required property === the string
+    return author.author === name;
+    // If there is a match return that object, otherwise return undefined
+  });
 }
 
 /* App
@@ -65,33 +70,35 @@ function checkBio(arrayAuthors, articleAuthor) {
 /**
  * Render the data from the fetch request to HTML
  * @param      {object}  element        The element to render the data
- * @param      {array}   arrayArticles  The array of articles
- * @param      {array}  arrayAuthors   The array of authors
+ * @param      {array}   articles  The array of articles
+ * @param      {array}  authors   The array of authors
  */
-function renderArticles(element, arrayArticles, arrayAuthors) {
+function renderArticles(element, articles, authors) {
   // If no array or it's empty call the errorHandler and return
-  if (!arrayArticles || arrayArticles.length < 1) {
+  if (!articles || articles.length < 1) {
     errorHandler();
     return;
   }
   // Else, if the array and it's items are there, render the text
   element.innerHTML = `
     <ul role="list" class="flow-section">
-    ${arrayArticles
+    ${articles
       // Destructure each article object on array, and render
-      .map(function ({ url, title, author, pubdate, article }) {
+      .map(function (article) {
+        const author = getAuthor(authors, article.author);
         return `<li class="flow-content">
         <article class="flow-content">
-          <h2><a href="#${url}">${title}</a></h2>
-          <footer class="wrapper">
-            <p class="author">by ${author}</p>
+          <h2><a href="#${article.url}">${article.title}</a></h2>
+          <footer class="wrapper flow-content">
+            <p class="author">By ${
+              author ? `${article.author} - <i>${author.bio}` : `${article.author}`
+            }</i></p>
             <p class="published">
-              <time datetime="${w3date(pubdate)}">${pubdate}</time>
+              <time datetime="${w3date(article.pubdate)}">${article.pubdate}</time>
               </p>
           </footer>
-          <p>${article}</p>
+          <p>${article.article}</p>
         </article>
-        ${checkBio(arrayAuthors, author)}
       </li>`;
       })
       .join("")}
@@ -103,9 +110,9 @@ function renderArticles(element, arrayArticles, arrayAuthors) {
  */
 async function fetchArticles() {
   try {
-    const response = await Promise.all([fetch(endpointArticle), fetch(endpointAuthor)]); //
-    const data = await checkResponses(response); // see helper functions
-    renderArticles(app, data[0].articles, data[1].authors); //
+    const response = await Promise.all([fetch(endpointArticle), fetch(endpointAuthor)]);
+    const data = await convertToJson(response); // see helper functions
+    renderArticles(app, data[0].articles, data[1].authors);
   } catch {
     errorHandler(app, errorMessage); // see helper functions
   }
