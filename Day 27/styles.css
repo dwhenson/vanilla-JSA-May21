@@ -1,0 +1,22 @@
+body {
+  display: grid;
+  place-items: center;
+}
+
+main {
+  width: 100%;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 10rem;
+  gap: 2rem;
+  text-align: center;
+}
+
+.item {
+  place-self: center;
+}

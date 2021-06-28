@@ -29,10 +29,10 @@ main {
 .visually-hidden:hover,
 .visually-hidden:active,
 .visually-hidden:focus {
+  display: block;
   top: 5px;
   left: 5px;
   z-index: 100000;
-  display: block;
   width: auto;
   height: auto;
   padding: 15px 23px 14px;
