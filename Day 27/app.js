@@ -47,8 +47,6 @@ const monsters = [
   { image: "sock", text: "A pair of socks." },
 ];
 
-console.log(monsters);
-
 /* ====================================================
    Functions
    ==================================================== */
