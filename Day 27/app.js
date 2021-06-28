@@ -83,15 +83,23 @@ function shuffle(array) {
 /* Library
 /* ==================================================== */
 
+/**
+ * Renders the shuffled array to the target HTML element
+ * @param      {object}  element        The element to render the data
+ * @param      {array}   arrayToRender  The array to render
+ */
 function renderMonsters(element, arrayToRender) {
   element.innerHTML = arrayToRender
     .map((item) => {
-      return `<img class="item" src="images/${item.image}.svg" alt="${item.text}">
-    `;
+      return `<img class="item" src="images/${item.image}.svg" alt="${item.text}">`;
     })
     .join("");
 }
 
+/**
+ * Shuffles a copy of the orginal array ready for rendering to HTML
+ * @param      {array}  arrayToShuffle  The array to shuffle
+ */
 function shuffleMonsters(arrayToShuffle) {
   const shuffledArray = shuffle([...arrayToShuffle]);
   renderMonsters(app, shuffledArray);
