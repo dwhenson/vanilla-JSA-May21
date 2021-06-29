@@ -95,7 +95,7 @@ function renderMonsters(element, arrayToRender) {
 }
 
 /**
- * Shuffles a copy of the orginal array ready for rendering to HTML
+ * Shuffles a copy of the original array ready for rendering to HTML
  * @param      {array}  arrayToShuffle  The array to shuffle
  */
 function shuffleMonsters(arrayToShuffle) {
