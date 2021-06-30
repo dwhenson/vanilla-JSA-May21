@@ -2,49 +2,52 @@
   Variables
   ==================================================== */
 const app = document.querySelector("#app");
-const doors = [...document.querySelectorAll("button")];
+const buttons = [...document.querySelectorAll("button")];
 const monsters = [
   {
     image: "monster1",
     text: "A yellow monster with one eye and a curly nose and tail.",
   },
-  // {
-  //   image: "monster2",
-  //   text: "A yellow monster with one eye, a peanut-shaped body, and spindly arms and legs.",
-  // },
-  // {
-  //   image: "monster3",
-  //   text: "A green monster with two eyes, wavy arms, and sharp teeth running down its body.",
-  // },
-  // {
-  //   image: "monster4",
-  //   text: "A red monster with two horns, four arms, and a glum expression.",
-  // },
-  // {
-  //   image: "monster5",
-  //   text: "A green monster with one eye, a glum expression, and a round body.",
-  // },
-  // {
-  //   image: "monster6",
-  //   text: "A green monster, with one eye and a triangular body, doing a handstand.",
-  // },
-  // { image: "monster7", text: "A purple monster with one eye and two tentacles." },
-  // {
-  //   image: "monster8",
-  //   text: "A purple monster with an egg-shaped body, two horns, and an indifferent expression.",
-  // },
-  // {
-  //   image: "monster9",
-  //   text: "A blue, insect-like monster with two eyes, two arms, three legs, and four wings.",
-  // },
-  // {
-  //   image: "monster10",
-  //   text: "A blue, blob-shaped monster with two eyes, two legs, and no arms.",
-  // },
-  // {
-  //   image: "monster11",
-  //   text: "A black monster with a yeti-like body and a big smile.",
-  // },
+  {
+    image: "monster2",
+    text: "A yellow monster with one eye, a peanut-shaped body, and spindly arms and legs.",
+  },
+  {
+    image: "monster3",
+    text: "A green monster with two eyes, wavy arms, and sharp teeth running down its body.",
+  },
+  {
+    image: "monster4",
+    text: "A red monster with two horns, four arms, and a glum expression.",
+  },
+  {
+    image: "monster5",
+    text: "A green monster with one eye, a glum expression, and a round body.",
+  },
+  {
+    image: "monster6",
+    text: "A green monster, with one eye and a triangular body, doing a handstand.",
+  },
+  {
+    image: "monster7",
+    text: "A purple monster with one eye and two tentacles.",
+  },
+  {
+    image: "monster8",
+    text: "A purple monster with an egg-shaped body, two horns, and an indifferent expression.",
+  },
+  {
+    image: "monster9",
+    text: "A blue, insect-like monster with two eyes, two arms, three legs, and four wings.",
+  },
+  {
+    image: "monster10",
+    text: "A blue, blob-shaped monster with two eyes, two legs, and no arms.",
+  },
+  {
+    image: "monster11",
+    text: "A black monster with a yeti-like body and a big smile.",
+  },
   { image: "sock", text: "A pair of socks." },
 ];
 let shuffledMonsters;
@@ -98,7 +101,13 @@ function shuffleMonsters(arrayToShuffle) {
 function won() {
   window.setTimeout(function () {
     app.innerHTML = `
-      <iframe src="https://giphy.com/embed/fs5TModilUX2swyR43" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+      <iframe src="https://giphy.com/embed/fs5TModilUX2swyR43"
+        width="480"
+        height="270"
+        frameBorder="0"
+        class="giphy-embed"
+        allowFullScreen>
+      </iframe>
       <h2 aria-live="polite">Well Done! You got all the monsters!</h2>`;
   }, 500);
 }
@@ -121,7 +130,13 @@ function lost() {
   // Add short delay to allow user to see the sock
   window.setTimeout(function () {
     app.innerHTML = `
-      <iframe src="https://giphy.com/embed/s3qCaXmFQqJsQ" width="480" height="251" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+      <iframe src="https://giphy.com/embed/s3qCaXmFQqJsQ"
+        width="480"
+        height="251"
+        frameBorder="0"
+        class="giphy-embed"
+        allowFullScreen>
+      </iframe>
       <h2 aria-live="polite">Sorry, you found the sock!</h2>`;
   }, 500);
 }
@@ -132,12 +147,23 @@ function lost() {
  * @param      {number}  index   The index of the button
  */
 function swapImage(button, index) {
+  // Create a new image element
   const image = document.createElement("image");
-  // Set the content of the new element as the monster based on the button's index
-  image.innerHTML = `<img class="item" src="images/${shuffledMonsters[index].image}.svg" alt="${shuffledMonsters[index].alt}">`;
+  // Set the content of the new element as the monster based on the clicked button's index
+  image.innerHTML = `
+    <img
+          class="item"
+          src="images/${shuffledMonsters[index].image}.svg"
+          alt="${shuffledMonsters[index].alt}"
+     >`;
+  // Replace the button with the new image and its contents
   button.replaceWith(image);
-  // Check if the image was a sock, and it's not the last item in the array
-  if (shuffledMonsters[index].image === "sock" && counter < monsters.length - 1) {
+  // Check if the new image is a sock and it's not the last item in the array
+  // If true, call lost, otherwise check if won
+  if (
+    shuffledMonsters[index].image === "sock" &&
+    counter < monsters.length - 1
+  ) {
     lost();
   } else {
     checkIfWon();
@@ -151,8 +177,8 @@ function swapImage(button, index) {
 function findButtonIndex(event) {
   if (!event.target.closest("button")) return;
   const button = event.target.closest("button");
-  const index = doors.findIndex((door) => {
-    return door === button;
+  const index = buttons.findIndex((clickedButton) => {
+    return clickedButton === button;
   });
   swapImage(button, index);
 }
@@ -160,5 +186,6 @@ function findButtonIndex(event) {
 /* ====================================================
    Inits and Event Listeners
    ==================================================== */
+// Copy and shuffle the array of monsters on page load
 shuffleMonsters(monsters);
 document.addEventListener("click", findButtonIndex);
