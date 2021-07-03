@@ -55,7 +55,6 @@ let counter = 0;
 /* ====================================================
    Functions
    ==================================================== */
-
 /* Helpers
 /* ==================================================== */
 /**
@@ -92,6 +91,12 @@ function shuffleMonsters(arrayToShuffle) {
   shuffledMonsters = shuffledArray;
 }
 
+function playAgain(event) {
+  if (event.target.id !== "play-again") return;
+  shuffleMonsters(monsters);
+  renderGame(app, monsters);
+}
+
 /* Library
 /* ==================================================== */
 
@@ -101,15 +106,16 @@ function shuffleMonsters(arrayToShuffle) {
 function won() {
   window.setTimeout(function () {
     app.innerHTML = `
+      <h2 aria-live="polite">Well Done! You got all the monsters!</h2>
+      <button id="play-again">Play again??</button>
       <iframe src="https://giphy.com/embed/fs5TModilUX2swyR43"
         width="480"
         height="270"
         frameBorder="0"
         class="giphy-embed"
         allowFullScreen>
-      </iframe>
-      <h2 aria-live="polite">Well Done! You got all the monsters!</h2>`;
-  }, 500);
+      </iframe>`;
+  }, 250);
 }
 
 /**
@@ -130,6 +136,7 @@ function lost() {
   // Add short delay to allow user to see the sock
   window.setTimeout(function () {
     app.innerHTML = `
+      <button id="play-again">Play again??</button>
       <iframe src="https://giphy.com/embed/s3qCaXmFQqJsQ"
         width="480"
         height="251"
@@ -138,7 +145,7 @@ function lost() {
         allowFullScreen>
       </iframe>
       <h2 aria-live="polite">Sorry, you found the sock!</h2>`;
-  }, 500);
+  }, 250);
 }
 
 /**
@@ -152,9 +159,9 @@ function swapImage(button, index) {
   // Set the content of the new element as the monster based on the clicked button's index
   image.innerHTML = `
     <img
-          class="item"
+          class="grid-item"
           src="images/${shuffledMonsters[index].image}.svg"
-          alt="${shuffledMonsters[index].alt}"
+          alt="${shuffledMonsters[index].text}"
      >`;
   // Replace the button with the new image and its contents
   button.replaceWith(image);
@@ -172,17 +179,38 @@ function swapImage(button, index) {
  * @param      {event}  event   The event
  */
 function findButtonIndex(event) {
-  if (!event.target.closest("button")) return;
+  if (!event.target.closest("[data-type='door']")) return;
   const button = event.target.closest("button");
-  const index = buttons.findIndex((clickedButton) => {
-    return clickedButton === button;
-  });
+  const index = button.dataset.index;
   swapImage(button, index);
 }
 
 /* ====================================================
    Inits and Event Listeners
    ==================================================== */
+
+/**
+ * Render the door images based on the monsters array length
+ * @param      {object}  element  The element to render the HTML
+ * @param      {array}   array    The array providing the number of items needed
+ */
+function renderGame(element, array) {
+  element.innerHTML = `
+   <h2>Click the door to reveal a monster. Try not to find the sock!</h2>
+       ${array
+         .map((item, index) => {
+           return `
+           <div class="grid-item" aria-live="polite">
+             <button data-type="door" data-index="${index}">
+               <img src="./images/door.svg"  alt="Door" />
+             </button>
+           </div>`;
+         })
+         .join(" ")}`;
+}
+
 // Copy and shuffle the array of monsters on page load
 shuffleMonsters(monsters);
+renderGame(app, monsters);
 document.addEventListener("click", findButtonIndex);
+document.addEventListener("click", playAgain);
