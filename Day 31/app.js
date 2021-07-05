@@ -91,6 +91,10 @@ function shuffleMonsters(arrayToShuffle) {
   shuffledMonsters = shuffledArray;
 }
 
+/**
+ * Reset the page's content to initial state
+ * @param      {object}  event   The event
+ */
 function playAgain(event) {
   if (event.target.id !== "play-again") return;
   shuffleMonsters(monsters);
@@ -202,7 +206,7 @@ function renderGame(element, array) {
            return `
            <div class="grid-item" aria-live="polite">
              <button data-type="door" data-index="${index}">
-               <img src="./images/door.svg"  alt="Door" />
+               <img src="./images/door.svg"  alt="Door ${index}" />
              </button>
            </div>`;
          })
