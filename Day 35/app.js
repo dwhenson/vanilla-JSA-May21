@@ -42,7 +42,7 @@ function showStatus(target, message) {
   // Remove it after 3 seconds
   setTimeout(function () {
     notificationElement.remove();
-  }, 3000);
+  }, 2000);
 }
 
 /*!
@@ -84,7 +84,7 @@ function removeNote(event) {
   const data = JSON.parse(localStorage.getItem("note"));
   for (const datum in data) {
     // Gets the form element based on the name attribute, and sets its value
-    const element = document.querySelector(`[name='${datum}']`);
+    const element = form.querySelector(`[name='${datum}']`);
     element.value = "";
   }
   localStorage.removeItem("note");
@@ -94,7 +94,6 @@ function removeNote(event) {
 /**
  * Saves a note to localStorage
  * @param      {object}  event    The event
- * @param      {event}   element  The element containing the value to save
  */
 function saveNote(event) {
   event.preventDefault();
@@ -104,7 +103,7 @@ function saveNote(event) {
   // Check if there is a value entered each form element
   for (const item in serializedData) {
     // Checks the form element based on the name attribute
-    const element = document.querySelector(`[name='${item}']`);
+    const element = form.querySelector(`[name='${item}']`);
     if (!element.value.trim()) {
       showStatus(form, `Sorry, you have to add some ${item} content`);
       return;
@@ -124,7 +123,7 @@ function renderSavedNote() {
   const data = JSON.parse(localStorage.getItem("note"));
   for (const datum in data) {
     // Gets the form element based on the name attribute, and sets its value
-    const element = document.querySelector(`[name='${datum}']`);
+    const element = form.querySelector(`[name='${datum}']`);
     element.value = data[datum];
   }
 }
