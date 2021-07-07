@@ -72,9 +72,8 @@ function serialize(data) {
 /**
  * Removes a note from localStorage
  * @param      {object}  event    The event
- * @param      {object}  element  The element to remove remaining value from
  */
-function removeNote(event, element) {
+function removeNote(event) {
   event.preventDefault();
   // Check if there is a note in localStorage
   if (!localStorage.getItem("note")) {
@@ -97,7 +96,7 @@ function removeNote(event, element) {
  * @param      {object}  event    The event
  * @param      {event}   element  The element containing the value to save
  */
-function saveNote(event, element) {
+function saveNote(event) {
   event.preventDefault();
   // Get the form fields and convert to an object
   const data = new FormData(form);
@@ -106,7 +105,7 @@ function saveNote(event, element) {
   for (const item in serializedData) {
     // Checks the form element based on the name attribute
     const element = document.querySelector(`[name='${item}']`);
-    if (!element.value) {
+    if (!element.value.trim()) {
       showStatus(form, `Sorry, you have to add some ${item} content`);
       return;
     }
