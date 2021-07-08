@@ -32,11 +32,11 @@ function renderMessage(element, message) {
  * @param      {object}  insertAfter  The element to append the new HTML element
  * @param      {string}  message      The message to render
  */
-function showStatus(target, message) {
+function showStatus(message) {
   // Create a notification element
   const notificationElement = document.createElement("div");
   notificationElement.setAttribute("aria-live", "polite");
-  target.insertAdjacentElement("afterend", notificationElement);
+  form.insertAdjacentElement("afterend", notificationElement);
   // Add the appropriate message
   renderMessage(notificationElement, message);
   // Remove it after 3 seconds
@@ -77,7 +77,7 @@ function removeNote(event) {
   event.preventDefault();
   // Check if there is a note in localStorage
   if (!localStorage.getItem("note")) {
-    showStatus(form, noNotes);
+    showStatus(noNotes);
     return;
   }
   // Remove the note and clear the UI
@@ -88,7 +88,7 @@ function removeNote(event) {
     element.value = "";
   }
   localStorage.removeItem("note");
-  showStatus(form, removedNote);
+  showStatus(removedNote);
 }
 
 /**
@@ -98,10 +98,9 @@ function removeNote(event) {
 function saveNote(event) {
   event.preventDefault();
   // Get the form fields and convert to an object
-  const data = new FormData(form);
-  const serializedData = serialize(data);
+  const formData = serialize(new FormData(form));
   // Check if there is a value entered each form element
-  for (const item in serializedData) {
+  for (const item in formData) {
     // Checks the form element based on the name attribute
     const element = form.querySelector(`[name='${item}']`);
     if (!element.value.trim()) {
@@ -110,21 +109,21 @@ function saveNote(event) {
     }
   }
   // Save the object to localStorage as a string
-  localStorage.setItem("note", JSON.stringify(serializedData));
-  showStatus(form, savedNote);
+  localStorage.setItem("note", JSON.stringify(formData));
+  showStatus(savedNote);
 }
 
 /**
  * Checks localStorage and renders any saved notes as needed
  */
 function renderSavedNote() {
-  if (!localStorage.getItem("note")) return;
   // Gets the note saved in localStorage
-  const data = JSON.parse(localStorage.getItem("note"));
-  for (const datum in data) {
+  const formData = JSON.parse(localStorage.getItem("note"));
+  if (!formData) return;
+  for (const item in formData) {
     // Gets the form element based on the name attribute, and sets its value
-    const element = form.querySelector(`[name='${datum}']`);
-    element.value = data[datum];
+    const element = form.querySelector(`[name='${item}']`);
+    element.value = formData[item];
   }
 }
 
