@@ -3,7 +3,7 @@ function weatherApp({
   elementSelector = "#app",
   errorWeather = "Can't get the weather right now",
   errorLocation = "Unable to retrieve your location",
-  key = "c81e60446f394ac3b6efb4b5c187cafa",
+  key = false,
   icon = true,
   imperial = false,
 }) {
@@ -97,6 +97,13 @@ function weatherApp({
    * Gets the lat long.from the geolocation API
    */
   function getLatLong() {
+    // Check if API key is provided.
+    if (!key) {
+      app.textContent =
+        "You need to provide an API key from weatherBit.com to use the app";
+      return;
+    }
+    // Check if geolocation supported and get positions
     if (!navigator.geolocation) {
       app.textContent = "Geolocation is not supported by your browser";
     } else {
@@ -114,4 +121,5 @@ function weatherApp({
   getLatLong();
 }
 
-weatherApp({});
+// weatherApp({});
+weatherApp({ key: "c81e60446f394ac3b6efb4b5c187cafa" });
