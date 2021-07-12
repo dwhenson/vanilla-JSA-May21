@@ -121,5 +121,14 @@ function weatherApp({
   getLatLong();
 }
 
-// weatherApp({});
-weatherApp({ key: "c81e60446f394ac3b6efb4b5c187cafa" });
+// App instantiation
+const options = {
+  key: "c81e60446f394ac3b6efb4b5c187cafa",
+  elementSelector: "#app",
+  errorWeather: "Can't help you with the weather - can you look outside instead?",
+  errorLocation: "Soz, we've no idea where you are!",
+  icon: true,
+  imperial: false,
+};
+
+weatherApp(options);
