@@ -1,0 +1,19 @@
+main {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+#app {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+p {
+  font-size: 1.5rem;
+  flex-basis: 75%;
+}
+
+.flow-section > * + * {
+  margin-top: 2rem;
+}

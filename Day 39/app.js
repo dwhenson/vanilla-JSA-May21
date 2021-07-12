@@ -1,13 +1,23 @@
 function weatherApp({
-  app = document.querySelector("#app"),
+  // Default values
+  elementSelector = "#app",
   errorWeather = "Can't get the weather right now",
   errorLocation = "Unable to retrieve your location",
-  endpoint = "https://api.weatherbit.io/v2.0/current?",
   key = "c81e60446f394ac3b6efb4b5c187cafa",
+  icon = true,
+  imperial = false,
 }) {
+  /* ====================================================
+   Variables
+   ==================================================== */
+  const endpoint = "https://api.weatherbit.io/v2.0/current?";
+  const app = document.querySelector(elementSelector);
+
   /* ====================================================
    Functions
    ==================================================== */
+  /* Helpers
+  /* ==================================================== */
   /**
    * Sanitize and encode all HTML in a user-submitted string
    * https://portswigger.net/web-security/cross-site-scripting/preventing
@@ -19,8 +29,6 @@ function weatherApp({
       return `&#${c.charCodeAt(0)};`;
     });
   }
-  /* Helpers
-/* ==================================================== */
   /**
    * Renders the error message to the HTML
    * @param {string}  message  The error message
@@ -47,13 +55,15 @@ function weatherApp({
   function renderWeather(data) {
     app.innerHTML = `
   <p>
-    The weather in <strong>${sanitizeHTML(data.city_name)}</strong> is <strong>
-    ${sanitizeHTML(data.weather.description.toLowerCase())}</strong> at the moment,
-    and its <strong>${sanitizeHTML(data.app_temp)} &#176;C.</strong>
+    The weather in <strong>${data.city_name}</strong> is <strong>
+    ${data.weather.description.toLowerCase()}</strong> at the moment,
+    and its <strong>${data.app_temp} &#176;${imperial ? "Fahrenheit" : "Celsius"}</strong>
   </p>
-  <img src="icons/${sanitizeHTML(data.weather.icon)}.png" alt="${sanitizeHTML(
-      data.weather.description
-    )}">
+  ${
+    icon
+      ? `<img src="icons/${data.weather.icon}.png" alt="${data.weather.description}">`
+      : ""
+  }
   `;
   }
 
@@ -65,14 +75,16 @@ function weatherApp({
    */
   async function getWeather(latitude, longitude) {
     const response = await fetch(
-      `${endpoint}lat=${latitude}&lon=${longitude}&key=${key}`
+      `${endpoint}lat=${latitude}&lon=${longitude}&key=${key}${
+        imperial ? "&units=I" : "&units=M"
+      }`
     );
     const data = await checkResponse(response);
     renderWeather(data.data[0]);
   }
 
   /**
-   * Assigns lat/long values to variables and calls getWeather
+   * Assigns lat/long values to and calls getWeather
    * @param      {object}  position  The position object from the geolocation API
    */
   function successLatLong(position) {
@@ -88,9 +100,11 @@ function weatherApp({
     if (!navigator.geolocation) {
       app.textContent = "Geolocation is not supported by your browser";
     } else {
-      navigator.geolocation.getCurrentPosition(successLatLong, function () {
-        error(errorLocation);
-      });
+      navigator.geolocation.getCurrentPosition(
+        successLatLong,
+        () => error(errorLocation),
+        { enableHighAccuracy: true }
+      );
     }
   }
 
@@ -99,3 +113,5 @@ function weatherApp({
    ==================================================== */
   getLatLong();
 }
+
+weatherApp({});
