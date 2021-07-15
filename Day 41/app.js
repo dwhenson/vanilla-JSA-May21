@@ -17,7 +17,10 @@ function weatherApp(APIkey, selector, options) {
     units: "M",
   };
   // The user values merged with the default options
-  const merged = Object.assign(defaults, options);
+  const { errorWeather, errorLocation, mainMessage, icon, units } = Object.assign(
+    defaults,
+    options
+  );
   const endpoint = "https://api.weatherbit.io/v2.0/current?";
   const element = document.querySelector(selector);
 
@@ -47,7 +50,7 @@ function weatherApp(APIkey, selector, options) {
    * @return {String}         The weather description
    */
   function getDescription(data) {
-    return merged.mainMessage
+    return mainMessage
       .replace("{{temp}}", sanitizeHTML(data.app_temp))
       .replace("{{conditions}}", sanitizeHTML(data.weather.description.toLowerCase()))
       .replace("{{city}}", sanitizeHTML(data.city_name));
@@ -70,13 +73,15 @@ function weatherApp(APIkey, selector, options) {
     return response.ok ? response.json() : Promise.reject(new Error(response.status));
   }
 
+  /**
+   * Checks if required parameters are provided
+   */
   function checkParams() {
     // Check if element to render HTML into is provided
     if (!element) {
       console.warn("Provide a valid selector for the element to render HTML into");
       return;
     }
-
     // Check if API key is provided.
     if (!key) {
       element.textContent =
@@ -94,11 +99,10 @@ function weatherApp(APIkey, selector, options) {
     element.innerHTML = `
     <p>${getDescription(data)}</p>
   ${
-    merged.icon
+    icon
       ? `<img src="icons/${data.weather.icon}.png" alt="${data.weather.description}">`
       : ""
-  }
-  `;
+  }`;
   }
 
   /**
@@ -109,7 +113,7 @@ function weatherApp(APIkey, selector, options) {
    */
   async function getWeather(latitude, longitude) {
     const response = await fetch(
-      `${endpoint}lat=${latitude}&lon=${longitude}&key=${key}&units=${merged.units}`
+      `${endpoint}lat=${latitude}&lon=${longitude}&key=${key}&units=${units}`
     );
     const data = await checkResponse(response);
     renderWeather(data.data[0]);
@@ -122,7 +126,7 @@ function weatherApp(APIkey, selector, options) {
   function successLatLong(position) {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
-    getWeather(latitude, longitude).catch(error(merged.errorWeather));
+    getWeather(latitude, longitude).catch(error(errorWeather));
   }
 
   /**
@@ -136,7 +140,7 @@ function weatherApp(APIkey, selector, options) {
     } else {
       navigator.geolocation.getCurrentPosition(
         successLatLong,
-        () => error(merged.errorLocation),
+        () => error(errorLocation),
         { enableHighAccuracy: true }
       );
     }
