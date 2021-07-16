@@ -2,7 +2,7 @@
  * Get a date in the future (or past) from a timestamp
  * @return {String} A formatted date string
  */
-function getFutureDate(locale = "en-US", formatOptions, timeAdjustment) {
+function getFutureDate(locale = navigator.language, formatOptions, timeAdjustment) {
   // Default format options
   const defaultFormat = {
     hour12: true,
@@ -20,7 +20,7 @@ function getFutureDate(locale = "en-US", formatOptions, timeAdjustment) {
   // Merge default and user options
   const mergedFormat = { ...defaultFormat, ...formatOptions };
   const mergedTimeFromNow = { ...defaultTimeFromNow, ...timeAdjustment };
-  // Destructure object keys and convert user adjustment values to milliseconds
+  // Destructure object keys and convert user adjustment time values to milliseconds
   const { hours, days, weeks, months, years } = mergedTimeFromNow;
   const adjustHours = hours * 60 * 60 * 1000;
   const adjustDays = days * 24 * 60 * 60 * 1000;
