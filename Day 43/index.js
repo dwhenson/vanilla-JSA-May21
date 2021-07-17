@@ -20,13 +20,26 @@ function getFutureDate(locale = navigator.language, formatOptions, timeAdjustmen
   // Merge default and user options
   const mergedFormat = { ...defaultFormat, ...formatOptions };
   const mergedTimeFromNow = { ...defaultTimeFromNow, ...timeAdjustment };
-  // Destructure object keys and convert user adjustment time values to milliseconds
-  const { hours, days, weeks, months, years } = mergedTimeFromNow;
-  const adjustHours = hours * 60 * 60 * 1000;
-  const adjustDays = days * 24 * 60 * 60 * 1000;
-  const adjustMonths = months * 30 * 24 * 60 * 60 * 1000;
-  const adjustYears = years * 12 * 30 * 24 * 60 * 60 * 1000;
-  const totalAdjust = adjustHours + adjustDays + adjustMonths + adjustYears;
+
+  // Times in milliseconds
+  const times = {
+    hours: 1000 * 60 * 60,
+    days: 1000 * 60 * 60 * 24,
+    weeks: 1000 * 60 * 60 * 24 * 7,
+    months: 1000 * 60 * 60 * 24 * 30,
+    years: 1000 * 60 * 60 * 24 * 365,
+  };
+
+  // Combine total user adjusted milliseconds
+  const totalAdjust = Object.keys(mergedTimeFromNow).reduce(function (total, key) {
+    // Make sure unit of time exists
+    if (!times[key]) {
+      console.log(`Sorry, "${key}" is not an accepted time value.`);
+    }
+    // If key is falsy skip the addition, else add the value in milliseconds
+    return !times[key] ? total : total + mergedTimeFromNow[key] * times[key];
+  }, 0);
+
   // Get timestamp when function called, adjust and return formatted result
   const timestamp = new Date().getTime();
   const adjustedDate = timestamp + totalAdjust;
@@ -47,11 +60,12 @@ const userFormat = {
 /* Time adjustment options
    ---------------- */
 const userTimeFromNow = {
-  // hours: 0,
-  // days: 0,
-  // weeks: 0,
-  // months: 0,
-  // years: 0,
+  seconds: 1000,
+  hours: 0,
+  days: 0,
+  weeks: 0,
+  months: 0,
+  years: 0,
 };
 // Function call with options
 getFutureDate(locale, userFormat, userTimeFromNow);
