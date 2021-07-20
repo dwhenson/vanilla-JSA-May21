@@ -65,7 +65,7 @@ const userTimeFromNow = {
   days: 0,
   weeks: 0,
   months: 0,
-  years: 0,
+  years: 1,
 };
 // Function call with options
 getFutureDate(locale, userFormat, userTimeFromNow);

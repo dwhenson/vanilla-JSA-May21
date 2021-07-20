@@ -6,7 +6,7 @@
 *,
 *::before,
 *::after {
-	box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 /* Remove default margin */
@@ -22,7 +22,7 @@ dl,
 dd,
 ul,
 ol {
-	margin: 0;
+  margin: 0;
 }
 
 /* Adjust line heights */
@@ -32,41 +32,40 @@ h2,
 .h2,
 h3,
 .h3 {
-	line-height: 1.2;
+  line-height: 1.2;
 }
 
-/* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
-ul[role="list"],
-ol[role="list"] {
-	padding-right: 0;
-	padding-left: 0;
-	list-style: none;
+/* Remove list styles on ul, ol elements with a class */
+:where(ul[class]),
+:where(ol[class]) {
+  padding-inline: 0;
+  list-style-type: none;
 }
 
 /* Set core root defaults */
 html {
-	scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
 
 /* Set core body defaults */
 body {
-	min-height: 100vh;
-	text-rendering: optimizeSpeed;
+  min-block-size: 100vh;
+  text-rendering: optimizeSpeed;
 }
 
 /* Make images easier to work with */
 img,
 picture {
-	display: block;
-	max-width: 100%;
+  display: block;
+  max-inline-size: 100%;
 }
 
 img[width] {
-	width: auto; /* Defer to max-width */
+  inline-size: auto; /* Defer to max-width */
 }
 
 img[width][height] {
-	height: auto; /* Preserve aspect ratio */
+  block-size: auto; /* Preserve aspect ratio */
 }
 
 /* Inherit fonts for inputs and buttons */
@@ -74,17 +73,17 @@ input,
 button,
 textarea,
 select {
-	font: inherit;
+  font: inherit;
 }
 
 /* Remove all animations and transitions for people that prefer not to see them */
 @media (prefers-reduced-motion: reduce) {
-	*,
-	*::before,
-	*::after {
-		transition-duration: 0.01ms !important;
-		animation-duration: 0.01ms !important;
-		animation-iteration-count: 1 !important;
-		scroll-behavior: auto !important;
-	}
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
 }
