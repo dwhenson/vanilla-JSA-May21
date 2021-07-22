@@ -7,7 +7,7 @@ const Stamp = (function () {
   const defaultNumber = 1;
 
   function Constructor(number) {
-    this.number = this.number = number ? number : defaultNumber;;
+    this.number = this.number = number ? number : defaultNumber;
   }
 
   Constructor.prototype.times = {
