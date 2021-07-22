@@ -87,6 +87,7 @@ node_modules/
 
 ## Linters and notes
 .editorconfig
+.eslintrc.json
 .eslintrc.js
 .prettierrc
 .prettierrc.json

@@ -1,6 +1,6 @@
 /* ==================================================
-	 Andy Bell Modern CSS Reset
-	 ================================================== */
+   Andy Bell Modern CSS Reset
+   ================================================== */
 
 /* Box sizing rules */
 *,
@@ -38,8 +38,8 @@ h3,
 /* Remove list styles on ul, ol elements with a class */
 :where(ul[class]),
 :where(ol[class]) {
-  padding-inline: 0;
   list-style-type: none;
+  padding-inline: 0;
 }
 
 /* Set core root defaults */
