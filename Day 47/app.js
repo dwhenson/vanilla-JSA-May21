@@ -3,11 +3,11 @@
  * @return     {objects}  Values from utility functions
  */
 const Stamp = (function () {
-  const timestamp = Date.now();
+  const timestamp = new Date().getTime();
   const defaultNumber = 1;
 
   function Constructor(number) {
-    this.number = number || defaultNumber;
+    this.number = this.number = number ? number : defaultNumber;;
   }
 
   Constructor.prototype.times = {
