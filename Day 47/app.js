@@ -2,9 +2,12 @@
  * Adds user defined units of time to an original time, and formats the result
  * @return     {objects}  Values from utility functions
  */
-const Stamp = (function (date) {
-  function Constructor(timestamp) {
-    this.timestamp = date ? new Date(date).getTime() : Date.now();
+const Stamp = (function () {
+  const timestamp = Date.now();
+  const defaultNumber = 1;
+
+  function Constructor(number) {
+    this.number = number || defaultNumber;
   }
 
   Constructor.prototype.times = {
@@ -15,25 +18,23 @@ const Stamp = (function (date) {
     years: 1000 * 60 * 60 * 24 * 365,
   };
 
-  const array = new Array(length);
-  console.log(array);
   /**
    * Adds a number of units of time to a timestamp
    * @param      {number}  timestamp  The timestamp
    * @param      {number}  number     The number of units to add
    * @return     {number}  The combined timestamp and units * milliseconds
    */
-  Constructor.prototype.addHours = function (n = 1) {
-    return this.timestamp + n * this.times.hours;
+  Constructor.prototype.addHours = function () {
+    return timestamp + this.number * this.times.hours;
   };
-  Constructor.prototype.addDays = function (n = 1) {
-    return this.timestamp + n * this.times.days;
+  Constructor.prototype.addDays = function () {
+    return timestamp + this.number * this.times.days;
   };
-  Constructor.prototype.addWeeks = function (n = 1) {
-    return this.timestamp + n * this.times.weeks;
+  Constructor.prototype.addWeeks = function () {
+    return timestamp + this.number * this.times.weeks;
   };
-  Constructor.prototype.addYears = function (n = 1) {
-    return this.timestamp + n * this.times.years;
+  Constructor.prototype.addYears = function () {
+    return timestamp + this.number * this.times.years;
   };
 
   /**
@@ -49,15 +50,12 @@ const Stamp = (function (date) {
       dateStyle: "medium",
     };
     // const format = { ...defaults, ...options };
-    return new Date(this.timeAdjust).toLocaleString(navigator.language, defaults);
+    return new Date(timestamp).toLocaleString(navigator.language, defaults);
   };
 
   return Constructor;
 })();
 
-const now = new Stamp();
-const inOneHour = now.addDays();
-// const inTwoWeeks = now.addWeeks(2);
-// const inFourYears = now.addYears(3);
-// const inTwoWeeksDate = new Stamp(inTwoWeeks).formatTimestamp();
-// const inTwoYearsDate = now.formatTimestamp(inFourYears);
+const now = new Stamp(); // ?
+const inTwoWeeks = now.addWeeks(2); // ? 60480022
+const inTwoWeeksDate = new Stamp(inTwoWeeks).formatTimestamp(); // ?
