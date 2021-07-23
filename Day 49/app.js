@@ -8,9 +8,8 @@ const Stamp = (function () {
    * @param      {Integer|String|Date}  timestamp  The timestamp
    */
   function Constructor(date) {
-    // this.timestamp = date ? Date.now(date) : Date.now();
-    // this.timestamp = Date.now(date) || Date.now();
     this.timestamp = new Date(date).getTime() || Date.now();
+    this.timeAdjust = 0;
   }
 
   /**
@@ -30,6 +29,7 @@ const Stamp = (function () {
    * @param      {number}  number     The number of units to add
    * @return     {number}  The combined timestamp and units * milliseconds
    */
+
   Constructor.prototype.addHours = function (number = 1) {
     return this.timestamp + number * times.hours;
   };
@@ -37,10 +37,12 @@ const Stamp = (function () {
     return this.timestamp + number * times.days;
   };
   Constructor.prototype.addWeeks = function (number = 1) {
-    return this.timestamp + number * times.weeks;
+    this.timeAdjust += this.timestamp + number * times.weeks;
+    return this; // ?
   };
   Constructor.prototype.addYears = function (number = 1) {
-    return this.timestamp + number * times.years;
+    this.timeAdjust = this.timestamp + number * times.years;
+    return this; // ?
   };
 
   /**
@@ -49,19 +51,18 @@ const Stamp = (function () {
    * @param      {object}  [options={}]  The user options
    * @return     {string}    The date as a string
    */
+
   Constructor.prototype.formatTimestamp = function () {
     const defaults = {
       hour12: true,
       timeStyle: "short",
       dateStyle: "medium",
     };
-    // const format = { ...defaults, ...options };
-    return new Date(this.timestamp).toLocaleString(navigator.language, defaults);
+    return new Date(adjust).toLocaleString(navigator.language, defaults);
   };
 
   return Constructor;
 })();
-
-const now = new Stamp("17 July 1990"); // ?
-const timeAdjust = now.addYears(8); // ?
-const adjustedDate = new Stamp(timeAdjust).formatTimestamp(); // ?
+const now = new Stamp(); // ?
+const timeAdjust = now.addYears(10).addWeeks(2); // ?
+const adjustedDate = new Stamp(now.adjust).formatTimestamp(); // ?
