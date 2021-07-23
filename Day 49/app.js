@@ -30,18 +30,18 @@ const Stamp = (function () {
    * @return     {number}  The combined timestamp and units * milliseconds
    */
 
-  Constructor.prototype.addHours = function (number = 1) {
-    return this.timestamp + number * times.hours;
-  };
-  Constructor.prototype.addDays = function (number = 1) {
-    return this.timestamp + number * times.days;
-  };
+  // Constructor.prototype.addHours = function (number = 1) {
+  //   return this.timestamp + number * times.hours;
+  // };
+  // Constructor.prototype.addDays = function (number = 1) {
+  //   return this.timestamp + number * times.days;
+  // };
   Constructor.prototype.addWeeks = function (number = 1) {
     this.timeAdjust += this.timestamp + number * times.weeks;
     return this; // ?
   };
   Constructor.prototype.addYears = function (number = 1) {
-    this.timeAdjust = this.timestamp + number * times.years;
+    this.timeAdjust += this.timestamp + number * times.years;
     return this; // ?
   };
 
@@ -58,11 +58,14 @@ const Stamp = (function () {
       timeStyle: "short",
       dateStyle: "medium",
     };
-    return new Date(adjust).toLocaleString(navigator.language, defaults);
+    return new Date(this.timestamp + this.timeAdjust).toLocaleString(
+      navigator.language,
+      defaults
+    );
   };
 
   return Constructor;
 })();
 const now = new Stamp(); // ?
-const timeAdjust = now.addYears(10).addWeeks(2); // ?
-const adjustedDate = new Stamp(now.adjust).formatTimestamp(); // ?
+const timeAdjust = now.addYears(10); // works with single value but fails on chaining
+const adjustedDate = new Stamp(timeAdjust.timeAdjust).formatTimestamp(); // ?
