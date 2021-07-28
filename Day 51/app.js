@@ -27,7 +27,7 @@ const Stamp = (function () {
     Object.freeze(time);
     // Set properties
     Object.defineProperties(this, {
-      _timestamp: { value: time.timestamp },
+      timestamp: { value: time.timestamp },
     });
   }
 
@@ -38,16 +38,16 @@ const Stamp = (function () {
    * @return     {number}  The combined timestamp and units * milliseconds
    */
   Constructor.prototype.addHours = function (number = 1) {
-    return new Constructor(this._timestamp + number * times.hours);
+    return new Constructor(this.timestamp + number * times.hours);
   };
   Constructor.prototype.addDays = function (number = 1) {
-    return new Constructor(this._timestamp + number * times.days);
+    return new Constructor(this.timestamp + number * times.days);
   };
   Constructor.prototype.addWeeks = function (number = 1) {
-    return new Constructor(this._timestamp + number * times.weeks);
+    return new Constructor(this.timestamp + number * times.weeks);
   };
   Constructor.prototype.addYears = function (number = 1) {
-    return new Constructor(this._timestamp + number * times.years);
+    return new Constructor(this.timestamp + number * times.years);
   };
 
   /**
@@ -62,7 +62,7 @@ const Stamp = (function () {
       timeStyle: "short",
       dateStyle: "medium",
     };
-    return new Date(this._timestamp).toLocaleString(navigator.language, defaults);
+    return new Date(this.timestamp).toLocaleString(navigator.language, defaults);
   };
 
   return Constructor;
@@ -70,4 +70,7 @@ const Stamp = (function () {
 
 // Create a new Stamp() instance for right now
 const now = new Stamp();
+now.timestamp // ?
+now.timestamp = 1234;
+now timestamp // ?
 now.addWeeks(3).addYears(10).formatTimestamp();

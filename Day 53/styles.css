@@ -1,0 +1,8 @@
+main {
+  margin-block: 3rem;
+  text-align: center;
+}
+
+.flow > * + * {
+  margin-block-start: 2rem;
+}
