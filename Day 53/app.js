@@ -39,6 +39,7 @@ const Dice = (function () {
     // Select elements based on parameters passed
     const button = document.querySelector(button_);
     const element = document.querySelector(element_);
+    if (!button || !element) throw "Both button and result elements must be provided";
     // Create the event listener
     createEventListener(button, this);
     // Set the property values
@@ -51,3 +52,4 @@ const Dice = (function () {
 })();
 
 const dice = new Dice("#dice", "#result");
+const dice1 = new Dice("#dice1", "#result1");

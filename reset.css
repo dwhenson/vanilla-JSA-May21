@@ -36,8 +36,8 @@ h3,
 }
 
 /* Remove list styles on ul, ol elements with a class */
-:where(ul[class]),
-:where(ol[class]) {
+:where(ul[role="list"]),
+:where(ol[role="list"]) {
   list-style-type: none;
   padding-inline: 0;
 }

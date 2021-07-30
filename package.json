@@ -1,33 +1,25 @@
 {
-  "keywords" : [
-
-  ],
-  "dependencies" : {
-    "healthier" : "^4.0.0"
-  },
-  "name" : "jsa-academy",
-  "main" : "index.js",
-  "scripts" : {
-
-  },
-  "license" : "ISC",
-  "optionalDependencies" : {
-
-  },
-  "devDependencies" : {
-    "stylelint-use-logical-spec" : "^3.2.0",
-    "stylelint-order" : "^4.1.0",
-    "eslint-config-prettier" : "^8.3.0",
-    "eslint" : "^7.29.0",
-    "stylelint-high-performance-animation" : "^1.5.2",
-    "eslint-plugin-unicorn" : "^34.0.1",
-    "eslint-plugin-html" : "^6.1.2",
-    "eslint-config-healthier" : "^3.2.0",
-    "stylelint-scss" : "^3.18.0",
-    "stylelint" : "^13.13.1",
-    "prettier" : "^2.3.1"
-  },
-  "author" : "",
-  "description" : "Projects from JS Academy",
-  "version" : "1.0.0"
+  "author": "",
+  "description": "Projects from JS Academy",
+  "version": "1.0.0",
+  "keywords": [],
+  "name": "jsa-academy",
+  "main": "index.js",
+  "scripts": {},
+  "license": "ISC",
+  "optionalDependencies": {},
+  "devDependencies": {
+    "eslint": "^7.29.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-unicorn": "^34.0.1",
+    "eslint-plugin-html": "^6.1.2",
+    "eslint-config-healthier": "^3.2.0",
+    "healthier": "^4.0.0",
+    "prettier": "^2.3.1",
+    "stylelint": "^13.13.1",
+    "stylelint-high-performance-animation": "^1.5.2",
+    "stylelint-order": "^4.1.0",
+    "stylelint-scss": "^3.18.0",
+    "stylelint-use-logical-spec": "^3.2.0"
+  }
 }
