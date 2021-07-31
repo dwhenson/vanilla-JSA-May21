@@ -30,17 +30,21 @@ const Dice = (function () {
    * @param      {object}  instance  The instance being created
    */
   function createEventListener(button, settings, instance) {
-    const numbers = [...new Array(instance._settings.sides)].map(function (item, index) {
-      return index;
+    // eslint-disable-next-line unicorn/prefer-spread
+    const sides = Array.from(new Array(instance._settings.sides)).map(function (
+      item,
+      index
+    ) {
+      return index + 1;
     });
     /**
      * Shuffles the dice array and use the first value
      */
     function roll() {
       // Randomizes the slides array
-      shuffle(numbers);
+      shuffle(sides);
       // Sets the text content of the _result property on on the instant
-      instance._result.textContent = `You rolled a ${numbers[0] + 1}`;
+      instance._result.textContent = `You rolled a ${sides[0]}`;
     }
     // Adds listener to relevant button
     button.addEventListener("click", roll);
@@ -61,7 +65,6 @@ const Dice = (function () {
 
     // Merge default and user defined values, and freeze
     const settings = { ...defaults, ...options };
-    Object.freeze(settings);
 
     // Set the property values
     Object.defineProperties(this, {
@@ -77,4 +80,4 @@ const Dice = (function () {
 })();
 
 const dice = new Dice("#dice", "#result");
-const dice1 = new Dice("#dice1", "#result1", { sides: 20 });
+const dice1 = new Dice("#dice1", "#result", { sides: 20 });
