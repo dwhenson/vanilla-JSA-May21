@@ -2,6 +2,7 @@ const Dice = (function () {
   // Default sides of the dice
   const defaults = {
     sides: 6,
+    message: `You rolled a {{roll}}.`,
   };
 
   /**
@@ -29,14 +30,9 @@ const Dice = (function () {
    * @param      {object}  settings  The settings (default + user combined)
    * @param      {object}  instance  The instance being created
    */
-  function createEventListener(button, settings, instance) {
-    // eslint-disable-next-line unicorn/prefer-spread
-    const sides = Array.from(new Array(instance._settings.sides)).map(function (
-      item,
-      index
-    ) {
-      return index + 1;
-    });
+  function createEventListener(sides, instance) {
+    // Get the properties from the instance
+    const { button, message, result } = instance;
     /**
      * Shuffles the dice array and use the first value
      */
@@ -44,7 +40,7 @@ const Dice = (function () {
       // Randomizes the slides array
       shuffle(sides);
       // Sets the text content of the _result property on on the instant
-      instance._result.textContent = `You rolled a ${sides[0]}`;
+      result.textContent = message.replace("{{roll}}", sides[0]);
     }
     // Adds listener to relevant button
     button.addEventListener("click", roll);
@@ -60,24 +56,40 @@ const Dice = (function () {
     // Select elements based on parameters passed
     const button = document.querySelector(button_);
     const element = document.querySelector(element_);
+    // Check elements exist
     if (!button || !element)
       throw new Error("Both button and result elements must be provided");
 
     // Merge default and user defined values, and freeze
-    const settings = { ...defaults, ...options };
+    const { message, sides } = { ...defaults, ...options };
 
     // Set the property values
     Object.defineProperties(this, {
-      _result: { value: element },
-      _settings: { value: settings },
+      button: { value: button },
+      message: { value: message },
+      sides: { value: sides },
+      result: { value: element },
+    });
+
+    // Create the side of the dice
+    const sidesArray = [...new Array(sides)].map(function (item, index) {
+      return index + 1;
     });
 
     // Create the event listener
-    createEventListener(button, settings, this);
+    createEventListener(sidesArray, this);
   }
 
   return Constructor;
 })();
 
-const dice = new Dice("#dice", "#result");
-const dice1 = new Dice("#dice1", "#result", { sides: 20 });
+// Create a D6
+const d6 = new Dice("#dice", "#result", {
+  message: "Nice one, you rolled {{roll}}",
+});
+
+// Create a D20
+const d20 = new Dice("#dice1", "#result", {
+  message: "{{roll}}",
+  sides: 20,
+});
