@@ -24,26 +24,32 @@ const Dice = (function () {
     }
   }
 
+  function rollDice(instance) {
+    // Create the side of the dice
+    const sidesArray = [...new Array(instance.sides)].map(function (item, index) {
+      return index + 1;
+    });
+    // // Randomizes the slides array
+    shuffle(sidesArray);
+    // // Sets the text content of the result property on on the instant
+    instance.result.textContent = instance.message.replace("{{roll}}", sidesArray[0]);
+  }
+
   /**
    * Creates an event listener and attaches it to the relevant button
    * @param      {object}  button    The button element
    * @param      {object}  settings  The settings (default + user combined)
    * @param      {object}  instance  The instance being created
    */
-  function createEventListener(sides, instance) {
-    // Get the properties from the instance
-    const { button, message, result } = instance;
+  function createEventListener(instance) {
     /**
      * Shuffles the dice array and use the first value
      */
     function roll() {
-      // Randomizes the slides array
-      shuffle(sides);
-      // Sets the text content of the _result property on on the instant
-      result.textContent = message.replace("{{roll}}", sides[0]);
+      rollDice(instance);
     }
     // Adds listener to relevant button
-    button.addEventListener("click", roll);
+    instance.button.addEventListener("click", roll);
   }
 
   /**
@@ -62,7 +68,6 @@ const Dice = (function () {
 
     // Merge default and user defined values, and freeze
     const { message, sides } = { ...defaults, ...options };
-
     // Set the property values
     Object.defineProperties(this, {
       button: { value: button },
@@ -71,14 +76,16 @@ const Dice = (function () {
       result: { value: element },
     });
 
-    // Create the side of the dice
-    const sidesArray = [...new Array(sides)].map(function (item, index) {
-      return index + 1;
-    });
-
     // Create the event listener
-    createEventListener(sidesArray, this);
+    createEventListener(this);
   }
+
+  /**
+   * Roll the dice
+   */
+  Constructor.prototype.roll = function () {
+    rollDice(this);
+  };
 
   return Constructor;
 })();
